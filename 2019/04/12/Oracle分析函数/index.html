@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT">
+  <meta name="keywords" content="数据库开发,">
 
 
 
@@ -79,16 +79,18 @@
 
 
 
-<meta name="description" content="学习和交流">
-<meta property="og:type" content="website">
-<meta property="og:title" content="lessBug">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta name="description" content="一、背景分析函数是Oracle专门用于解决复杂报表统计需求的功能强大的函数，它可以在数据中进行分组然后计算基于组的某种统计值，并且每一组的每一行都可以返回一个统计值。在本文，我会通过几个小需求，介绍一些分析函数的用法，以及我的一些学习心得。对于函数更详尽的用法，可参考本文第四点。 二、创建测试数据2.1 测试数据创建脚本123456-- MONEY_PER_MONTH 是100到200之间的随机">
+<meta name="keywords" content="数据库开发">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Oracle分析函数">
+<meta property="og:url" content="http://yoursite.com/2019/04/12/Oracle分析函数/index.html">
 <meta property="og:site_name" content="lessBug">
-<meta property="og:description" content="学习和交流">
+<meta property="og:description" content="一、背景分析函数是Oracle专门用于解决复杂报表统计需求的功能强大的函数，它可以在数据中进行分组然后计算基于组的某种统计值，并且每一组的每一行都可以返回一个统计值。在本文，我会通过几个小需求，介绍一些分析函数的用法，以及我的一些学习心得。对于函数更详尽的用法，可参考本文第四点。 二、创建测试数据2.1 测试数据创建脚本123456-- MONEY_PER_MONTH 是100到200之间的随机">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-04-14T12:00:29.835Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="lessBug">
-<meta name="twitter:description" content="学习和交流">
+<meta name="twitter:title" content="Oracle分析函数">
+<meta name="twitter:description" content="一、背景分析函数是Oracle专门用于解决复杂报表统计需求的功能强大的函数，它可以在数据中进行分组然后计算基于组的某种统计值，并且每一组的每一行都可以返回一个统计值。在本文，我会通过几个小需求，介绍一些分析函数的用法，以及我的一些学习心得。对于函数更详尽的用法，可参考本文第四点。 二、创建测试数据2.1 测试数据创建脚本123456-- MONEY_PER_MONTH 是100到200之间的随机">
 
 
 
@@ -118,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/">
+  <link rel="canonical" href="http://yoursite.com/2019/04/12/Oracle分析函数/">
 
 
 
 
 
-  <title>lessBug</title>
+  <title>Oracle分析函数 | lessBug</title>
   
 
 
@@ -143,8 +145,7 @@
     
   
 
-  <div class="container sidebar-position-left 
-  page-home">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
@@ -217,9 +218,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
 
@@ -249,9 +250,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/04/12/Oracle分析函数/" itemprop="url">Oracle分析函数</a></h1>
+          <h1 class="post-title" itemprop="name headline">Oracle分析函数</h1>
         
 
         <div class="post-meta">
@@ -323,9 +322,7 @@
       
 
       
-        
-          
-            <!-- ttoc -->
+        <!-- ttoc -->
 <h1><span id="一-背景">一、背景</span></h1><p>分析函数是Oracle专门用于解决复杂报表统计需求的功能强大的函数，它可以在数据中进行分组然后计算基于组的某种统计值，并且每一组的每一行都可以返回一个统计值。<br>在本文，我会通过几个小需求，介绍一些分析函数的用法，以及我的一些学习心得。对于函数更详尽的用法，可参考本文第四点。</p>
 <h1><span id="二-创建测试数据">二、创建测试数据</span></h1><h2><span id="21-测试数据创建脚本">2.1 测试数据创建脚本</span></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-- MONEY_PER_MONTH 是100到200之间的随机整数</span><br><span class="line">CREATE TABLE TMP AS</span><br><span class="line">SELECT RPT_DT,MONEY_PER_MONTH,TO_CHAR(TO_DATE(RPT_DT,&apos;YYYYMMDD&apos;),&apos;Q&apos;) QUARTER</span><br><span class="line">FROM</span><br><span class="line">(SELECT &apos;2019&apos;||LPAD(LEVEL,2,&apos;0&apos;)||&apos;01&apos; RPT_DT FROM DUAL CONNECT BY LEVEL &lt;=12) TMP1,</span><br><span class="line">(SELECT TRUNC(DBMS_RANDOM.VALUE(100,200)) MONEY_PER_MONTH FROM DUAL) TMP2;</span><br></pre></td></tr></table></figure>
 <h2><span id="22-测试数据详情">2.2 测试数据详情</span></h2><table>
@@ -626,8 +623,6 @@
 </blockquote>
 <h1><span id="五-我的学习心得">五、我的学习心得</span></h1><p>所有分析函数，完成掌握，实际上也没有必要，很多时候我们都用20%的技术解决80%的问题。我们得<strong>先对分析函数有一个整体的概念，比如它都有些什么函数，能解决哪些数据需求，工作中常见数据库产品对分析函数的支持程度如何。</strong>另外，<strong>多思考，如果不依赖数据库，面对类似的数据需求，用Java、Python、Excel有什么样的解决方案。</strong><br>其它我认为要掌握的知识有：dense_rank()、rank() over()、row_number() over() 、lag() over()、lead() over()。<br>创建测试数据的方法，可以学习一下。<br>上文SQL3的数据需求，附上Python的pandas解决方案，用diff()这个好轮子。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">import pandas as pd</span><br><span class="line">df=pd.DataFrame(&#123;&apos;month&apos;:[1,2,3,4,5,6],&apos;money&apos;:[151,180,142,101,160,148]&#125;)</span><br><span class="line">print(df)</span><br><span class="line">print(df.diff()) #df.diff() = df – df.shift()</span><br></pre></td></tr></table></figure></p>
 
-          
-        
       
     </div>
     
@@ -642,304 +637,36 @@
 
     <footer class="post-footer">
       
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/23/收藏文字/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="莫莫雨">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="lessBug">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/02/23/收藏文字/" itemprop="url">收藏文字</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-23T10:40:09+08:00">
-                2019-02-23
-              </time>
-            
-
-            
-
-            
-          </span>
-
+        <div class="post-tags">
           
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/文字/" itemprop="url" rel="index">
-                    <span itemprop="name">文字</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
+            <a href="/tags/数据库开发/" rel="tag"># 数据库开发</a>
           
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
         </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1><span id="1背景">1.背景</span></h1><p>我一直觉得做为一名技术人员，我在文字功底方面的能力急待提高。比如，要写产品介绍、功能说明等文档时，我就觉得颇为痛苦。我看到别人写出来的东西，很高大上，包装得很好，逼格很高。我想虽然我短期内无法提高这种能力，但我可以学习，可以模仿，积累这方面的技能。这篇博客就是用来整理收藏一些我认为值得自己学习的文字。<br>如有侵权行为，请及时告知于我，谢谢。</p>
-<h1><span id="2收藏内容">2.收藏内容</span></h1><h2><span id="2019022301">2019022301</span></h2><h3><span id="内容">内容</span></h3><p>数据治理本身分狭义和广义两个区别，狭义的治理主要是组织、制度、流程这些，data governance的一个定义就是 the management of management；广义的治理包括数据质量、数据标准这些数据标准化。对共用数据制定标准，达成系统建设共识，降低数据转换代价。</p>
-<h3><span id="我的评论">我的评论</span></h3><p>仰慕，我不知道要怎么样，才能写出这么厉害的话语。<br>上述文字来源<a href="https://www.zhihu.com/question/47646261" target="_blank" rel="noopener">https://www.zhihu.com/question/47646261</a></p>
-<h2><span id="2019022300">2019022300</span></h2><h3><span id="内容">内容</span></h3><p>LinkedIn部署了很多数据存储和处理系统，包括Teradata的数据仓库、开源的Hadoop分布式文件系统，开源的Hive数据仓库以及自己开发的开源试试分析软件Pinot。而WhereHows则能帮LinkedIn的员工检索和分享LinkedIn的HDFS系统中超过25000个共享数据集。在数据爆炸的今天，随时掌握企业内部有价值信息的情况（元数据）非常重要，这能大大提高企业员工的信息搜索和分享深度，盘活整个企业的数据资产。</p>
-<h3><span id="我的评论">我的评论</span></h3><p>这段话里的“分享深度”、“盘活数据资产”，对我来说挺高大上的。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
       
 
       
       
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
       
 
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/06/hello-world/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="莫莫雨">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="lessBug">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/01/06/hello-world/" itemprop="url">你好，世界</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
             
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-06T11:46:29+08:00">
-                2019-01-06
-              </time>
+              <a href="/2019/02/23/收藏文字/" rel="next" title="收藏文字">
+                <i class="fa fa-chevron-left"></i> 收藏文字
+              </a>
             
+          </div>
 
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
             
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/未分类/" itemprop="url" rel="index">
-                    <span itemprop="name">未分类</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
+          </div>
         </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
       
 
       
-        
-          
-            <h1><span id="1背景">1.背景</span></h1><p>用该博客整理IT工作与学习收获。<br>以前在csdn有一个博客，荒废了多年，见<a href="https://blog.csdn.net/tulinying" target="_blank" rel="noopener">https://blog.csdn.net/tulinying</a></p>
-<h1><span id="2hexo搭博客收获">2.hexo搭博客收获</span></h1><p>1.镜像要切到淘宝，不然老慢老慢的。<br><a href="https://www.jianshu.com/p/26640fbad18e" target="_blank" rel="noopener">https://www.jianshu.com/p/26640fbad18e</a><br>2.配置_config.yml的参数的时候冒号后面要有空格，即要写成type: git，不能写成type:git<br>惭愧惭愧，之前没接触过yml。<br>3.github上设置了自己的shh私钥，可是还是报错误<br>ssh: connect to host github.com port 22: Connection refused<br>所以我hexo deploy老是不成功啊。<br>解决方案如下：<br>Go to C:\Users\yourusername.ssh<br>Create a new file called config<br>Put these into the new file<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Host github.com</span><br><span class="line">Hostname ssh.github.com</span><br><span class="line">Port 443</span><br></pre></td></tr></table></figure></p>
-<h1><span id="3todo">3.TODO</span></h1><p>多看书多看报少吃零食多睡觉<br>多思考多总结<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select &apos;hello-world&apos; from dual;</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
       
     </footer>
   </div>
@@ -949,10 +676,11 @@
   </article>
 
 
-    
-  </section>
 
-  
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -960,6 +688,10 @@
 
 
           
+
+  
+
+
 
         </div>
         
@@ -980,8 +712,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -1041,6 +782,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">1.</span> <span class="nav-text">一、背景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">2.</span> <span class="nav-text">二、创建测试数据</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 测试数据创建脚本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 测试数据详情</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">3.</span> <span class="nav-text">三、相关需求及SQL示例</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 统计当季总处置金额</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 统计当季初至当月累计处置金额</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">3.3.</span> <span class="nav-text">3.3 统计每月与上月的变动额</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">4.</span> <span class="nav-text">四、其它参考资料</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">5.</span> <span class="nav-text">五、我的学习心得</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -1174,6 +931,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
